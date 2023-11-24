@@ -2,6 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 import { IOrder, IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 
+
+// Order Schema Described Here
 const orderSchema = new Schema<IOrder>({
   productName: {
     type: String,
@@ -17,6 +19,8 @@ const orderSchema = new Schema<IOrder>({
   },
 });
 
+
+// Main User Schema Described Here With "IUser" & "UserModel"
 const userSchema = new Schema<IUser, UserModel>({
   userId: {
     type: Number,
@@ -77,6 +81,7 @@ const userSchema = new Schema<IUser, UserModel>({
   },
 });
 
+// User Password Hashed Before Save DB Using "bcrypt" Described Here
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
     this.password,
@@ -85,6 +90,8 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+
+// Statics Method Described Here
 userSchema.statics.isUserExists = async function (userId: number) {
   const checkIfUser = await User.findOne({ userId });
   return checkIfUser;

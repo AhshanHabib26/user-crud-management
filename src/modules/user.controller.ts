@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import userSchemaValidation, { userOrderValidation } from './user.validation';
 import { userService } from './user.services';
 
+
+// 1. Create a new user & Return
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
@@ -9,7 +11,6 @@ const createUser = async (req: Request, res: Response) => {
     const result = await userService.userCreateService(userDataValidation);
 
     const userUpdateResponse = {
-      _id: result._id,
       userId: result.userId,
       username: result.username,
       fullName: result.fullName,
@@ -37,6 +38,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+// 2. Retrieve a list of all users
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const result = await userService.getAllUserService();
@@ -58,6 +60,8 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+
+// 3. Retrieve a specific user by ID
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -79,6 +83,8 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+
+// 4. Update user information using userId
 const getSingleUserAndUpdate = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -106,6 +112,8 @@ const getSingleUserAndUpdate = async (req: Request, res: Response) => {
   }
 };
 
+
+// 5. Delete a user using userId
 const getSingleUserAndDelete = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -129,6 +137,8 @@ const getSingleUserAndDelete = async (req: Request, res: Response) => {
   }
 };
 
+
+// 6. Add New Product in Order
 const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
   try {
     const userOrder = req.body;
@@ -156,6 +166,8 @@ const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
   }
 };
 
+
+// 7. Retrieve all orders for a specific userId & user
 const getUserAllOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -177,6 +189,7 @@ const getUserAllOrders = async (req: Request, res: Response) => {
   }
 };
 
+// 8. Calculate Total Price of Orders for a Specific userId & user
 const getUserAllOrdersTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
