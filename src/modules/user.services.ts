@@ -6,7 +6,23 @@ const userCreateService = async (userData: IUser) => {
   return user;
 };
 
+const getAllUserService = async () => {
+  const users = await User.aggregate([
+    {
+      $project: {
+        _id: 0,
+        userName: 1,
+        fullName: 1,
+        age: 1,
+        email: 1,
+        address: 1,
+      },
+    },
+  ]);
+  return users;
+};
 
 export const userService = {
-    userCreateService
-}
+  userCreateService,
+  getAllUserService,
+};

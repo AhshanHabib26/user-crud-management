@@ -6,7 +6,7 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  const error = { ...err };
+  let error = { ...err };
   error.message = err.message;
 
   res.status(error.statusCode || 500).json({
