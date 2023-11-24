@@ -114,10 +114,30 @@ const getOrderDataAndAddedService = async (
         { $push: { orders: userOrder } },
       );
     } else {
-      await User.updateOne({ userId: userId }, { $set: { orders: [userOrder] } });
+      await User.updateOne(
+        { userId: userId },
+        { $set: { orders: [userOrder] } },
+      );
     }
   } else {
     throw new Error('User & Order not found');
+  }
+};
+
+const getUserAllOrdersService = async (userId: number) => {
+  const userIdExists = await User.isUserExists(userId);
+  if (userIdExists) {
+    const result = await User.aggregate([
+      {
+        $match: { userId: userId },
+      },
+      {
+        $project: { _id: 0, orders: 1 },
+      },
+    ]);
+    return result[0];
+  } else {
+    throw new Error('User not found');
   }
 };
 
@@ -128,4 +148,5 @@ export const userService = {
   getSingleUserAndUpdateService,
   getSingleUserAndDeleteService,
   getOrderDataAndAddedService,
+  getUserAllOrdersService,
 };

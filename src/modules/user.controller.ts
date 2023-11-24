@@ -156,11 +156,33 @@ const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
   }
 };
 
+const getUserAllOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userService.getUserAllOrdersService(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: {
+        code: 500,
+        description: error.message || 'Something went wrong',
+      },
+    });
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
   getSingleUser,
   getSingleUserAndUpdate,
   getSingleUserAndDelete,
-  getUserOrderDataAndAdded
+  getUserOrderDataAndAdded,
+  getUserAllOrders,
 };
