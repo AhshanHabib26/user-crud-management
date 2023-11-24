@@ -9,5 +9,6 @@ userRouter.put('/:userId', userController.getSingleUserAndUpdate);
 userRouter.delete('/:userId', userController.getSingleUserAndDelete);
 userRouter.put('/:userId/orders', userController.getUserOrderDataAndAdded);
 userRouter.get('/:userId/orders', userController.getUserAllOrders);
+userRouter.get('/:userId/orders/total-price', userController.getUserAllOrdersTotalPrice) 
 
 export default userRouter;
