@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import userSchemaValidation from './user.validation';
 import { userService } from './user.services';
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userData = req.body;
     const userDataValidation = userSchemaValidation.parse(userData);
@@ -26,7 +26,7 @@ const createUser = async (req: Request, res: Response) => {
       data: userUpdateResponse,
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
