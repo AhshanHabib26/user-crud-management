@@ -106,9 +106,34 @@ const getSingleUserAndUpdate = async (req: Request, res: Response) => {
   }
 };
 
+
+const getSingleUserAndDelete = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userService.getSingleUserAndDeleteService(
+      Number(userId),
+    );
+    res.status(200).json({
+      success: true,
+      message: 'User Deleted successfully',
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: {
+        code: 500,
+        description: error.message || 'Something went wrong',
+      },
+    });
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
   getSingleUser,
   getSingleUserAndUpdate,
+  getSingleUserAndDelete,
 };

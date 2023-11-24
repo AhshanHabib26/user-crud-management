@@ -91,9 +91,20 @@ const getSingleUserAndUpdateService = async (
   }
 };
 
+const getSingleUserAndDeleteService = async (userId: number) => {
+  const userIdExists = await User.isUserExists(userId);
+  if (userIdExists) {
+    const result = await User.deleteOne({ userId });
+    return result;
+  } else {
+    throw new Error('User not found');
+  }
+};
+
 export const userService = {
   userCreateService,
   getAllUserService,
   getSingleUserService,
   getSingleUserAndUpdateService,
+  getSingleUserAndDeleteService,
 };
