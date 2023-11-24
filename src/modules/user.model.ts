@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IOrder, IUser } from './user.interface';
+import { IOrder, IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 
 const orderSchema = new Schema<IOrder>({
@@ -17,7 +17,7 @@ const orderSchema = new Schema<IOrder>({
   },
 });
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser, UserModel>({
   userId: {
     type: Number,
     required: [true, 'ID is required'],
@@ -85,4 +85,9 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-export const User = mongoose.model<IUser>('User', userSchema);
+userSchema.statics.isUserExists = async function (userId: number) {
+  const checkIfUser = await User.findOne({ userId });
+  return checkIfUser;
+};
+
+export const User = mongoose.model<IUser, UserModel>('User', userSchema);
