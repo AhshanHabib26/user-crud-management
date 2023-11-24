@@ -1,5 +1,6 @@
 import { IUser } from './user.interface';
 import { User } from './user.model';
+import bcrypt from 'bcrypt';
 
 const userCreateService = async (userData: IUser) => {
   const user = await User.create(userData);
@@ -49,8 +50,50 @@ const getSingleUserService = async (userId: number) => {
   }
 };
 
+const getSingleUserAndUpdateService = async (
+  userId: number,
+  userData: IUser,
+) => {
+  const userIdExists = await User.isUserExists(userId);
+  if (userIdExists) {
+    userData.password = await bcrypt.hash(
+      userData.password,
+      Number(process.env.SALT_ROUND),
+    );
+
+    await User.updateOne({ userId: userId }, userData, {
+      new: true,
+      runValidators: true,
+    });
+
+    const result = await User.aggregate([
+      {
+        $match: { userId: userId },
+      },
+      {
+        $project: {
+          _id: 0,
+          userId: 1,
+          userName: 1,
+          fullName: 1,
+          age: 1,
+          isActive: 1,
+          email: 1,
+          hobbies: 1,
+          address: 1,
+        },
+      },
+    ]);
+
+    return result;
+  } else {
+    throw new Error('User not found');
+  }
+};
+
 export const userService = {
   userCreateService,
   getAllUserService,
   getSingleUserService,
+  getSingleUserAndUpdateService,
 };

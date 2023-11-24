@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import userSchemaValidation from './user.validation';
 import { userService } from './user.services';
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
+const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     const userDataValidation = userSchemaValidation.parse(userData);
@@ -25,57 +25,90 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
       message: 'User created succesfully!',
       data: userUpdateResponse,
     });
-  } catch (error) {
-    next(error);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Server Error',
+      error: {
+        code: 500,
+        description: error.message || 'Server Error',
+      },
+    });
   }
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const result = await userService.getAllUserService();
 
-const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await userService.getAllUserService();
-  
-      res.status(200).json({
-        success: true,
-        message: "User fetched succesfully!",
-        data: result,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    res.status(200).json({
+      success: true,
+      message: 'User fetched succesfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Try again!',
+      error: {
+        code: 500,
+        description: error.message || 'Try again!',
+      },
+    });
+  }
+};
 
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userService.getSingleUserService(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'User fetched succesfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: {
+        code: 500,
+        description: error.message || 'Something went wrong',
+      },
+    });
+  }
+};
 
+const getSingleUserAndUpdate = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const userData = req.body;
 
-  const getSingleUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const { userId } = req.params
-      const result = await userService.getSingleUserService(Number(userId))
-      res.status(200).json({
-        success: true,
-        message: "User fetched succesfully!",
-        data: result,
-      });
-    } catch (error) {
-      res.json({
-        success: false,
-        message: "User not found",
-        error: {
-          code: 404,
-          description: "User not found!",
-        },
-      });
-  
-      next(error);
-    }
-  };
+    const result = await userService.getSingleUserAndUpdateService(
+      Number(userId),
+      userData,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'User updated succesfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: {
+        code: 500,
+        description: error.message || 'Something went wrong',
+      },
+    });
+  }
+};
 
 export const userController = {
   createUser,
   getAllUsers,
-  getSingleUser
+  getSingleUser,
+  getSingleUserAndUpdate,
 };
