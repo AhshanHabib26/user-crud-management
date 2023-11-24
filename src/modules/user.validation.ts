@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const userNameValidation = z.object({
   firstName: z.string(),
@@ -11,6 +11,12 @@ const userAddressValidation = z.object({
   country: z.string(),
 });
 
+export const userOrderValidation = z.object({
+  productName: z.string(),
+  price: z.number(),
+  quantity: z.number(),
+});
+
 const userSchemaValidation = z.object({
   userId: z.number(),
   username: z.string(),
@@ -21,6 +27,7 @@ const userSchemaValidation = z.object({
   isActive: z.boolean().default(true),
   hobbies: z.array(z.string()),
   address: userAddressValidation,
+  orders: z.array(userOrderValidation),
 });
 
 export default userSchemaValidation;

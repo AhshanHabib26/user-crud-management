@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import userSchemaValidation from './user.validation';
+import userSchemaValidation, { userOrderValidation } from './user.validation';
 import { userService } from './user.services';
 
 const createUser = async (req: Request, res: Response) => {
@@ -106,7 +106,6 @@ const getSingleUserAndUpdate = async (req: Request, res: Response) => {
   }
 };
 
-
 const getSingleUserAndDelete = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -130,10 +129,38 @@ const getSingleUserAndDelete = async (req: Request, res: Response) => {
   }
 };
 
+const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
+  try {
+    const userOrder = req.body;
+    const userOrderDataValidation = userOrderValidation.parse(userOrder);
+    const { userId } = req.params;
+    const result = await userService.getOrderDataAndAddedService(
+      Number(userId),
+      userOrderDataValidation,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: {
+        code: 500,
+        description: error.message || 'Something went wrong',
+      },
+    });
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
   getSingleUser,
   getSingleUserAndUpdate,
   getSingleUserAndDelete,
+  getUserOrderDataAndAdded
 };

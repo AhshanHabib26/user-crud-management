@@ -1,4 +1,4 @@
-import { IUser } from './user.interface';
+import { IOrder, IUser } from './user.interface';
 import { User } from './user.model';
 import bcrypt from 'bcrypt';
 
@@ -101,10 +101,31 @@ const getSingleUserAndDeleteService = async (userId: number) => {
   }
 };
 
+const getOrderDataAndAddedService = async (
+  userId: number,
+  userOrder: IOrder,
+) => {
+  const userIdExists = await User.isUserExists(userId);
+  if (userIdExists) {
+    const user = await User.findOne({ userId: userId });
+    if (user?.orders && Array.isArray(user.orders)) {
+      await User.updateOne(
+        { userId: userId },
+        { $push: { orders: userOrder } },
+      );
+    } else {
+      await User.updateOne({ userId: userId }, { $set: { orders: [userOrder] } });
+    }
+  } else {
+    throw new Error('User & Order not found');
+  }
+};
+
 export const userService = {
   userCreateService,
   getAllUserService,
   getSingleUserService,
   getSingleUserAndUpdateService,
   getSingleUserAndDeleteService,
+  getOrderDataAndAddedService,
 };
