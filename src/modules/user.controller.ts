@@ -3,7 +3,10 @@ import userSchemaValidation, { userOrderValidation } from './user.validation';
 import { userService } from './user.services';
 
 
-// 1. Create a new user & Return
+
+// @desc      User Create Controller
+// @route     POST /api/users
+// @access    public
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
@@ -38,7 +41,9 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-// 2. Retrieve a list of all users
+// @desc      Get All User Controller
+// @route     GET /api/users
+// @access    public
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const result = await userService.getAllUserService();
@@ -61,7 +66,9 @@ const getAllUsers = async (req: Request, res: Response) => {
 };
 
 
-// 3. Retrieve a specific user by ID
+// @desc      Get Single User Controller
+// @route     GET /api/users/:userId
+// @access    public
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -84,7 +91,9 @@ const getSingleUser = async (req: Request, res: Response) => {
 };
 
 
-// 4. Update user information using userId
+// @desc      Update Single User Controller
+// @route     PUT /api/users/:userId
+// @access    public
 const getSingleUserAndUpdate = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -113,7 +122,9 @@ const getSingleUserAndUpdate = async (req: Request, res: Response) => {
 };
 
 
-// 5. Delete a user using userId
+// @desc      Delete Single User Controller
+// @route     DELTE /api/users/:userId
+// @access    public
 const getSingleUserAndDelete = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -138,7 +149,9 @@ const getSingleUserAndDelete = async (req: Request, res: Response) => {
 };
 
 
-// 6. Add New Product in Order
+// @desc      Add Order Controller
+// @route     PUT /api/users/:userId/orders
+// @access    public
 const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
   try {
     const userOrder = req.body;
@@ -167,7 +180,9 @@ const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
 };
 
 
-// 7. Retrieve all orders for a specific userId & user
+// @desc      Get All Order For Specific User Controller
+// @route     GET /api/users/:userId/orders
+// @access    public
 const getUserAllOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -189,7 +204,9 @@ const getUserAllOrders = async (req: Request, res: Response) => {
   }
 };
 
-// 8. Calculate Total Price of Orders for a Specific userId & user
+// @desc      Calculate Order Total Price and Quantity Controller
+// @route     GET /api/users/:userId/orders
+// @access    public
 const getUserAllOrdersTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
