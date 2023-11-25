@@ -167,7 +167,7 @@ const getUserAllOrdersTotalPriceService = async (userId: number) => {
         $project: { _id: 0, totalPrice: 1 },
       },
     ]);
-    return result[0] || null;
+    return result[0]?.totalPrice || 0;
   } else {
     throw new Error('User not found');
   }
