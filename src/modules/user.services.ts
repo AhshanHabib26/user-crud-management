@@ -2,8 +2,6 @@ import { IOrder, IUser } from './user.interface';
 import { User } from './user.model';
 import bcrypt from 'bcrypt';
 
-
-
 const userCreateService = async (userData: IUser) => {
   const user = await User.create(userData);
   return user;
@@ -14,7 +12,7 @@ const getAllUserService = async () => {
     {
       $project: {
         _id: 0,
-        userName: 1,
+        username: 1,
         fullName: 1,
         age: 1,
         email: 1,
@@ -36,7 +34,7 @@ const getSingleUserService = async (userId: number) => {
         $project: {
           _id: 0,
           userId: 1,
-          userName: 1,
+          username: 1,
           fullName: 1,
           age: 1,
           isActive: 1,
@@ -76,7 +74,7 @@ const getSingleUserAndUpdateService = async (
         $project: {
           _id: 0,
           userId: 1,
-          userName: 1,
+          username: 1,
           fullName: 1,
           age: 1,
           isActive: 1,
@@ -122,7 +120,7 @@ const getOrderDataAndAddedService = async (
       );
     }
   } else {
-    throw new Error('User & Order not found');
+    throw new Error('User not found');
   }
 };
 

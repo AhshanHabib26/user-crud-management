@@ -1,8 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+import {  Request, Response } from 'express';
 import userSchemaValidation, { userOrderValidation } from './user.validation';
 import { userService } from './user.services';
-
-
 
 // @desc      User Create Controller
 // @route     POST /api/users
@@ -30,11 +28,11 @@ const createUser = async (req: Request, res: Response) => {
       data: userUpdateResponse,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Server Error',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Server Error',
       },
     });
@@ -50,21 +48,20 @@ const getAllUsers = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'User fetched succesfully!',
+      message: 'Users fetched succesfully!',
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Try again!',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Try again!',
       },
     });
   }
 };
-
 
 // @desc      Get Single User Controller
 // @route     GET /api/users/:userId
@@ -79,17 +76,16 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Something went wrong',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Something went wrong',
       },
     });
   }
 };
-
 
 // @desc      Update Single User Controller
 // @route     PUT /api/users/:userId
@@ -110,17 +106,16 @@ const getSingleUserAndUpdate = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Something went wrong',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Something went wrong',
       },
     });
   }
 };
-
 
 // @desc      Delete Single User Controller
 // @route     DELTE /api/users/:userId
@@ -133,21 +128,20 @@ const getSingleUserAndDelete = async (req: Request, res: Response) => {
     );
     res.status(200).json({
       success: true,
-      message: 'User Deleted successfully',
+      message: 'User deleted successfully',
       data: null,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Something went wrong',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Something went wrong',
       },
     });
   }
 };
-
 
 // @desc      Add Order Controller
 // @route     PUT /api/users/:userId/orders
@@ -168,17 +162,16 @@ const getUserOrderDataAndAdded = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Something went wrong',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Something went wrong',
       },
     });
   }
 };
-
 
 // @desc      Get All Order For Specific User Controller
 // @route     GET /api/users/:userId/orders
@@ -193,11 +186,11 @@ const getUserAllOrders = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Something went wrong',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Something went wrong',
       },
     });
@@ -216,14 +209,14 @@ const getUserAllOrdersTotalPrice = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Total price calculated successfully!',
-      data: result,
+      data: { totalPrice: result },
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Something went wrong',
       error: {
-        code: 500,
+        code: 404,
         description: error.message || 'Something went wrong',
       },
     });
