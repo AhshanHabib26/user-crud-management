@@ -11,7 +11,7 @@ app.use(cors());
 app.get('/', (req: Request, res: Response) => {
   res.send({
     success: true,
-    message: 'Welcome CRUD Application',
+    message: 'Welcome CRUD Application!',
   });
 });
 
