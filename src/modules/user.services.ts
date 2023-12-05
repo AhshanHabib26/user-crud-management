@@ -3,6 +3,8 @@ import { User } from './user.model';
 import bcrypt from 'bcrypt';
 
 const userCreateService = async (userData: IUser) => {
+
+
   const user = await User.create(userData);
   return user;
 };

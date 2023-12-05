@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { IOrder, IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 
-
 // Order Schema Described Here
 const orderSchema = new Schema<IOrder>({
   productName: {
@@ -19,13 +18,11 @@ const orderSchema = new Schema<IOrder>({
   },
 });
 
-
 // Main User Schema Described Here With "IUser" & "UserModel"
 const userSchema = new Schema<IUser, UserModel>({
   userId: {
     type: Number,
     required: [true, 'ID is required'],
-    unique: true,
   },
   username: {
     type: String,
@@ -90,6 +87,16 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// If userId exisits
+userSchema.pre('save', async function (next) {
+  const isIdExists = await User.findOne({
+    userId: this.userId,
+  });
+  if (isIdExists) {
+    throw new Error('userId already exists');
+  }
+  next();
+});
 
 // Statics Method Described Here
 userSchema.statics.isUserExists = async function (userId: number) {
